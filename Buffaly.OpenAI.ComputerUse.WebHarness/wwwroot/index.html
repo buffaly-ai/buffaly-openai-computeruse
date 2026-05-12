@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Computer Use Workbench</title>
+  <link rel="stylesheet" href="styles/computer-use-workbench.css">
+</head>
+<body>
+  <main class="app-shell">
+    <header class="hero-card">
+      <div class="brand-lockup">
+        <div class="brand-mark"><img src="images/bf_logo_fav_Large.png" alt="Buffaly"></div>
+        <div>
+          <p class="eyebrow">Buffaly Desktop Driver</p>
+          <h1>Computer Use Workbench</h1>
+          <p class="hero-copy">Run OpenAI computer-use tasks with live screenshot feedback, artifacts, and driver diagnostics.</p>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <div id="apiStatus" class="status-pill">Checking</div>
+        <button id="refreshButton" class="secondary" type="button">Refresh</button>
+      </div>
+    </header>
+
+    <section class="workbench-grid" aria-label="Computer use workbench">
+      <aside class="control-panel">
+        <div class="panel-section">
+          <p class="eyebrow">Command</p>
+          <h2>Direction</h2>
+          <label class="direction-field">
+            <span>Task direction</span>
+            <textarea id="directionInput" rows="7">Move the mouse slightly and report what happened.</textarea>
+          </label>
+          <div class="run-actions">
+            <button id="startButton" class="primary wide" type="button">Start run</button>
+            <button id="interruptButton" class="secondary danger wide" type="button" disabled>Stop run</button>
+          </div>
+        </div>
+
+        <div class="panel-section divider options-grid">
+          <label>
+            <span>Model</span>
+            <input id="modelInput" value="gpt-5.4">
+          </label>
+          <label>
+            <span>Max steps</span>
+            <input id="maxStepsInput" type="number" min="1" value="40">
+          </label>
+          <label>
+            <span>Screenshot scale</span>
+            <input id="screenshotScaleInput" type="number" min="0.1" step="0.1" value="1">
+          </label>
+          <label>
+            <span>Capture scope</span>
+            <select id="captureScopeInput">
+              <option value="desktop">Desktop</option>
+              <option value="window">Window</option>
+              <option value="client">Client area</option>
+            </select>
+          </label>
+          <label>
+            <span>Window title</span>
+            <input id="windowTitleInput" placeholder="Title contains">
+          </label>
+          <label>
+            <span>Process name</span>
+            <input id="processNameInput" placeholder="chrome">
+          </label>
+          <label>
+            <span>Popup mode</span>
+            <select id="popupModeInput">
+              <option value="active-owned">Active owned</option>
+              <option value="none">None</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="status-card">
+          <div><span>Run</span><strong id="runIdText">None</strong></div>
+          <div><span>Status</span><strong id="runStatusText">Idle</strong></div>
+          <div><span>Output root</span><strong id="outputRootText">Loading</strong></div>
+        </div>
+      </aside>
+
+      <section class="screenshot-card">
+        <div class="canvas-toolbar">
+          <div>
+            <p class="eyebrow">Live visual feedback</p>
+            <h2>Latest screenshot</h2>
+            <p class="subtle">The screenshot updates as the driver captures the target window or desktop.</p>
+          </div>
+        </div>
+        <div class="screenshot-stage">
+          <img id="latestScreenshot" alt="Latest computer-use screenshot">
+          <div id="screenshotEmpty" class="empty-state">
+            <strong>No screenshot yet.</strong>
+            <span>Start a run to see the current computer-use view here.</span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="history-panel">
+        <div class="panel-header compact">
+          <div>
+            <p class="eyebrow">Session</p>
+            <h2>Recent runs</h2>
+          </div>
+        </div>
+        <div id="runList" class="run-list">No runs yet.</div>
+      </aside>
+    </section>
+
+    <section class="details-grid">
+      <article class="details-panel">
+        <div class="panel-header compact">
+          <div>
+            <p class="eyebrow">Live</p>
+            <h2>Driver output</h2>
+          </div>
+        </div>
+        <pre id="stdoutLog">No run started.</pre>
+      </article>
+
+      <article class="details-panel error-panel">
+        <div class="panel-header compact">
+          <div>
+            <p class="eyebrow">Diagnostics</p>
+            <h2>Errors</h2>
+          </div>
+        </div>
+        <pre id="stderrLog">No errors.</pre>
+      </article>
+
+      <article class="details-panel artifact-list">
+        <div class="panel-header compact">
+          <div>
+            <p class="eyebrow">Artifacts</p>
+            <h2>Run files</h2>
+          </div>
+        </div>
+        <div id="fileList" class="file-list">No files yet.</div>
+      </article>
+    </section>
+  </main>
+
+  <script src="/js/kcs/global.js"></script>
+  <script src="/js/kcs/LocalStorage2.js"></script>
+  <script src="/js/kcs/moremoo4.js?v=2"></script>
+  <script src="/js/kcs/JsonMethod.js?v=2"></script>
+  <script src="/js/kcs/validators.js?v=2"></script>
+  <script src="/js/kcs/stl.js?v=2"></script>
+  <script>
+    window.UserMessages = window.UserMessages || {
+      DisplayNow: function(message, kind){ try { console[kind === 'Error' ? 'error' : 'log'](message); } catch {} },
+      DisplayAll: function(){},
+      AddError: function(){},
+      Save: function(){}
+    };
+    window.UserMessages_ConsoleFulfill = window.UserMessages_ConsoleFulfill || function(){};
+  </script>
+  <script src="/JsonWs/Buffaly.OpenAI.ComputerUse.WebHarness.ComputerUseWorkbenchJsonWsService.ashx.js?v=20260423.1"></script>
+  <script src="js/computer-use-workbench.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+﻿.vs/
+bin/
+obj/
+artifacts/
+TestResults/
+App_Data/
+logs/
+*.user
+*.suo
+*.pfx
+*.pem
+*.key
+appsettings.Development.json
+NuGet.config

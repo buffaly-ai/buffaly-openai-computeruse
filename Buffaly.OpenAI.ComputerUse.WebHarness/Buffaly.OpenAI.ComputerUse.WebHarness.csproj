@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<BuildProjectReferences>true</BuildProjectReferences>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Buffaly.OpenAI.ComputerUse\Buffaly.OpenAI.ComputerUse.csproj" />
+		<ProjectReference Include="..\..\..\Buffaly.Development\Buffaly.Agent.Web.Common\Buffaly.Agent.Web.Common.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="BasicUtilities">
+			<HintPath>C:\dev\BuffalyNet6\lib\BasicUtilities.dll</HintPath>
+		</Reference>
+		<Reference Include="Buffaly.Common">
+			<HintPath>C:\dev\BuffalyNet6\lib\Buffaly.Common.dll</HintPath>
+		</Reference>
+		<Reference Include="WebAppUtilities">
+			<HintPath>C:\dev\BuffalyNet6\lib\WebAppUtilities.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Generated\JsonWs\*.ashx.js">
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="wwwroot\**\*">
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Include="Skills\**\*">
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
+
+</Project>
+

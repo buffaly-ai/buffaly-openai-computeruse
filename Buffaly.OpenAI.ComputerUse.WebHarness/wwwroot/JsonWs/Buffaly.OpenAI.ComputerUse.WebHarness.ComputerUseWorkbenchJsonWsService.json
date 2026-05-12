@@ -1,0 +1,13 @@
+{
+  "Assembly":"Buffaly.OpenAI.ComputerUse.WebHarness, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+  "Type":"Buffaly.OpenAI.ComputerUse.WebHarness.ComputerUseWorkbenchJsonWsService",
+  "KebabName":"computer-use-workbench-json-ws-service",
+  "Methods":[
+    { "IsStatic":"true", "IsReturnTypeArray":"false", "KebabName":"get-config", "Parameters":[{ "Type":"ComputerUseWorkbenchConfigRequestContract", "IsNullable":"false", "Name":"request", "IsArray":"false", "IsEnum":"false" }], "ReturnType":"ComputerUseWorkbenchConfigContract", "UrlName":null, "Name":"GetConfig", "DataObject":{} },
+    { "IsStatic":"true", "IsReturnTypeArray":"true", "KebabName":"list-runs", "Parameters":[{ "Type":"ComputerUseListRunsRequestContract", "IsNullable":"false", "Name":"request", "IsArray":"false", "IsEnum":"false" }], "ReturnType":"ComputerUseRunSnapshotContract", "UrlName":null, "Name":"ListRuns", "DataObject":{} },
+    { "IsStatic":"true", "IsReturnTypeArray":"false", "KebabName":"get-run", "Parameters":[{ "Type":"ComputerUseGetRunRequestContract", "IsNullable":"false", "Name":"request", "IsArray":"false", "IsEnum":"false" }], "ReturnType":"ComputerUseRunSnapshotContract", "UrlName":null, "Name":"GetRun", "DataObject":{} },
+    { "IsStatic":"true", "IsReturnTypeArray":"false", "KebabName":"start-run", "Parameters":[{ "Type":"StartComputerUseRunRequest", "IsNullable":"false", "Name":"request", "IsArray":"false", "IsEnum":"false" }], "ReturnType":"ComputerUseRunSnapshotContract", "UrlName":null, "Name":"StartRun", "DataObject":{} },
+    { "IsStatic":"true", "IsReturnTypeArray":"false", "KebabName":"interrupt-run", "Parameters":[{ "Type":"ComputerUseInterruptRunRequestContract", "IsNullable":"false", "Name":"request", "IsArray":"false", "IsEnum":"false" }], "ReturnType":"ComputerUseInterruptRunResultContract", "UrlName":null, "Name":"InterruptRun", "DataObject":{} }
+  ],
+  "Namespace":"Buffaly.OpenAI.ComputerUse.WebHarness"
+}

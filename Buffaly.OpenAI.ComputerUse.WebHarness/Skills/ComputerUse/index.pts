@@ -1,0 +1,79 @@
+import Buffaly.Agent.Tools.Http Buffaly.Agent.Tools.Http.JsonWsHelper JsonWsHelper;
+import BasicUtilities BasicUtilities.JsonObject JsonObject;
+import BasicUtilities BasicUtilities.StringUtil StringUtil;
+
+prototype ComputerUseSkillAction : OpsAction
+{
+	Description = @"Base action type for cohesive ComputerUse module tools.";
+}
+
+[SemanticEntity("computer use skill")]
+prototype ComputerUseSkill : SkillEntity
+{
+	Description = "Run an end-to-end OpenAI Computer Use task through the installed ComputerUse web module and desktop runner.";
+	ActionRoot = ComputerUseSkillAction;
+}
+
+prototype ComputerUseWebModuleService : Service
+{
+	ServiceName = "ComputerUseWebModuleService";
+	Scope = "per-binding";
+	Description = @"Installed ComputerUse web-module JSON route binding. The service exposes task-level runs, not low-level computer primitives.";
+
+	String BaseUrl = "http://127.0.0.1:5014";
+	String ApiPrefix = "api/buffaly.openai.computeruse.webharness/computer-use-workbench-json-ws-service";
+
+	function Initialize() : string
+	{
+		if (StringUtil.IsEmpty(this.BaseUrl))
+			return "Error: ComputerUseWebModuleService.BaseUrl is required.";
+		return "ComputerUseWebModuleService initialized (BaseUrl = " + this.BaseUrl + ").";
+	}
+
+	function StartRun(JsonObject args) : string
+	{
+		JsonObject normalizedArgs = args == null ? new JsonObject() : args;
+		string routeUrl = JsonWsHelper.BuildJsonRouteUrl(this.BaseUrl, this.ApiPrefix, "start-run");
+		return JsonWsHelper.CallJsonWs(routeUrl, "StartRun", "", normalizedArgs);
+	}
+}
+
+[SemanticEntity("local computer use web module service")]
+partial prototype ComputerUseWebModuleService#Local : ComputerUseWebModuleService
+{
+	BaseUrl = "http://127.0.0.1:5014";
+	Description = "Local installed ComputerUse web module binding.";
+}
+
+[SemanticProgram.InfinitivePhrase("to run a computer use task")]
+[SemanticProgram.InfinitivePhrase("to use the computer")]
+prototype ToRunComputerUseTask : ComputerUseSkillAction
+{
+	Description = @"instruction, model(optional), maxSteps(optional), captureScope(optional), windowTitle(optional), webModuleBaseUrl(optional). Runs one cohesive ComputerUse task through the installed web module; this replaces the old primitive OpenAIComputerUse response/action tools.";
+
+	ComputerUseWebModuleService Service = ComputerUseWebModuleService#Local;
+
+	function Execute(string instruction, string model, string maxSteps, string captureScope, string windowTitle, string webModuleBaseUrl) : string
+	{
+		if (StringUtil.IsEmpty(instruction))
+		{
+			return "Error: instruction is required.";
+		}
+
+		if (!StringUtil.IsEmpty(webModuleBaseUrl))
+		{
+			this.Service.BaseUrl = webModuleBaseUrl;
+		}
+
+		JsonObject args = new JsonObject();
+		args["Direction"] = instruction;
+		if (!StringUtil.IsEmpty(model)) args["Model"] = model;
+		if (!StringUtil.IsEmpty(maxSteps)) args["MaxSteps"] = maxSteps;
+		if (!StringUtil.IsEmpty(captureScope)) args["CaptureScope"] = captureScope;
+		if (!StringUtil.IsEmpty(windowTitle)) args["WindowTitle"] = windowTitle;
+
+		JsonObject routeArgs = new JsonObject();
+		routeArgs["request"] = args;
+		return this.Service.StartRun(routeArgs);
+	}
+}
